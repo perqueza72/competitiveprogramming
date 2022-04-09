@@ -21,6 +21,7 @@ int main(){
     for(char j=i+1; j<m-1; j++){
       for(char k=j+1; k<m; k++){
         se.clear();
+
         for(int s=0; s<n; s++){
           a[0] = spotty[s][i];
           a[1] = spotty[s][j];
@@ -38,8 +39,9 @@ int main(){
             break;
           }
         }
-
+        
         cont++;
+
       }
     }
   }
