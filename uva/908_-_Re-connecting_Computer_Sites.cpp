@@ -2,79 +2,106 @@
 
 using namespace std;
 
+int n;
+
 struct edge{
-  int origin;
+  int begin;
   int end;
-  int weigth;
+  int w;
+
+  edge(int begin, int end, int w){
+    this->begin = begin;
+    this->end = end;
+    this->w = w;
+  }
+
+  edge(){
+    this->begin = 0;
+    this->end = 0;
+    this->w = 0;
+  }
+
+  void operator() (int begin, int end, int w){
+    this->begin = begin;
+    this->end = end;
+    this->w = w;
+  }
 };
 
 bool operator<(const edge &a, const edge &b){
-  if(a.weigth < b.weigth) return false;
-  return true;
+  if(a.w < b.w) return true;
+  return false;
+}
+
+vector<int> p;
+
+int dsu(int x){
+  if(x == p[x]) return p[x];
+  return p[x] = dsu(p[x]);
+}
+
+void merge(int a, int b){
+  a = dsu(a);
+  b = dsu(b);
+  if(a != b){
+    p[a] = b;
+  }
+}
+
+vector<edge> v;
+
+void kruskal(){
+  int ejes = 0, sum = 0;
+  edge e;
+  sort(v.begin(), v.end());
+  for(int i=0; i<v.size() && ejes < n-1; i++){
+    e = v[i];
+    if(dsu(e.begin) != dsu(e.end)){
+      merge(e.begin, e.end);
+      ejes++;
+      sum+=e.w;
+    }
+  }
+
+  cout << sum << "\n";
 }
 
 int main(){
-  ios_base::sync_with_stdio(0);
-  cin.tie(NULL);
-  cout.tie(NULL);
 
-  int n, cont = 0, t, w, sum = 0, aux, k, nodo;
-  priority_queue<edge> pq;
+  int sum, a, b, w, t, k, id = 0;
   edge e;
-  vector<bool> visited;
-  vector<vector<edge> > grafo;
 
   while(cin >> n){
-    grafo.assign(n+1, vector<edge>()); 
-    visited.assign(n+1, false);
-    pq = priority_queue<edge>();
-    sum = 0;
-
-    for(int i=1; i<n; i++){
-      cin >> e.origin >> e.end >> e.weigth;
-      sum+= e.weigth;
-      grafo[e.origin].push_back(e);
-      aux = e.end;
-      e.end = e.origin;
-      e.origin = aux;
-      grafo[e.end].push_back(e);
-
+    if(id++) cout << "\n";
+    p.resize(n+1);
+    v.resize(0);
+    for(int i=0; i<=n; i++){
+      p[i] = i;
     }
-    e.origin = e.end;
-    e.weigth = 0;
-    pq.push(e);
+    sum = 0;
+    for(int i=1; i<n; i++){
+      cin >> a >> b >> w;
+      e(a,b,w);
+      v.push_back(e);
+      sum+= w;
+    }
     cout << sum << "\n";
-
+    sum = 0;
+    v.resize(0);
     cin >> k;
     for(int i=0; i<k; i++){
-      cin >> e.origin >> e.end >> e.weigth;
-      grafo[e.origin].push_back(e);
-      aux = e.end;
-      e.end = e.origin;
-      e.origin = aux;
-      grafo[e.end].push_back(e);
+      cin >> a >> b >> w;
+      e(a,b,w);
+      v.push_back(e);
     }
-
     cin >> t;
-    for(int i=0; i<t; i++) cin >> aux >> aux >> aux;
-
-    sum = cont = 0;
-    while(pq.size() && cont < n){
-
-      nodo = (pq.top()).end;
-      w = (pq.top()).weigth;
-      pq.pop();
-      if(visited[nodo]) continue;
-      visited[nodo] = true;
-      cont++;
-      sum+= w;
-
-      for(int i=0; i<grafo[nodo].size(); i++){
-        pq.push(grafo[nodo][i]);
-      }
+    for(int i=0; i<t; i++){
+      cin >> a >> b >> w;
+      e(a,b,w);
+      v.push_back(e);
     }
 
-    cout << sum << "\n\n";
+    kruskal();
   }
 
 
