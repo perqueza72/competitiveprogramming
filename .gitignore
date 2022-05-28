@@ -2,5 +2,5 @@
 *.out
 *.in
 template.cpp
-uva_problems.json
+*.json
 generator.js
