@@ -2,24 +2,27 @@
 
 using namespace std;
 
+
 const long long MOD = 1e9+7;
-
-long long pow(long long a, long long b){
-    long long r = 1;
-    for(int i=0; i<b; i++){
-        r*=a;
-        r%=MOD;
+long long pow(long long b, long long e){
+  long long r = 1;
+  b%=MOD;
+  for(long long i=0; i<64; i++){
+    if(e&(1ll<<i)){
+      r=(r*b)%MOD;
     }
+    b=(b*b)%MOD;
+  }
 
-    return r;
+  return r%MOD;
 }
 
 int main(){
 
-    long long n;
-    cin >> n;
-    
-    cout << (pow(3ll,n)-7ll-(n+1ll)*n) << endl;
+  long long n;
+  cin >> n;
+  long long r = (pow(3ll, 3ll*n)-pow(7ll, n)+MOD)%MOD;
+  cout << r << endl;
 
-    return 0;
+  return 0;
 }
