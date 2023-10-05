@@ -6,24 +6,17 @@ int n;
 int arr[(int)1e5 + 10];
 int bs(int value){
 
-    int l = 0, r = n;
+    int l = 0, r = n-1;
     int mid, midV;
     while(l <= r){
         mid = (l+r)/2;
         midV = arr[mid];
-        if (mid == l) break;
 
-        if(midV == value) break;
-        if (midV < value) l = mid;
+        if (midV <= value) l = mid+1;
         else if (midV > value) r = mid-1;
     }
 
-    if(midV > value) return 0;
-    while(value >= midV && mid < n){
-        mid++;
-        midV = arr[mid];
-    }
-    return mid;
+    return r+1;
 }
 
 
